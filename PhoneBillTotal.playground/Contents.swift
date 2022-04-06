@@ -38,7 +38,7 @@ public func solution(_ S: inout String) -> Int {
             freeChargeKey = phoneNumber
         }
 
-        //Break the call times down into the seconds value for each call
+        //Break the call times down into the seconds value for each call add them up.
         let callTimes: Int = Array(callDetail[0].split(separator: ":")).compactMap({Int($0)}).enumerated().map({(index, value) in
             
             switch index {
@@ -48,15 +48,13 @@ public func solution(_ S: inout String) -> Int {
                 return value * 60
             case 2:
                 return value
-
             default:
                 return 0
             }
 
         }).reduce(0, +)
         
-        
-        //Calculate the total charges incurred
+        //Calculate the total charges incurred according to call rules
         var charge = 0
         if callTimes < 300 {
             charge = callTimes * 3
@@ -74,24 +72,25 @@ public func solution(_ S: inout String) -> Int {
         //Add to map
         callTotals[phoneNumber] = charge
         
+        //Now "charge" represents the total charge for the phone number if seen
+        //more than once.
         //Determine which call is to be free
-        //Lowest sequential phone number
+        //Lowest sequential phone number in case of equal charges
         if charge >= highest {
             if charge == highest, phoneNumber < freeChargeKey {
                 freeChargeKey = phoneNumber
-            } else if charge > highest {
+            } else {
                 highest = charge
                 freeChargeKey = phoneNumber
             }
-            
         }
     }
     //Remove free call charge from total
     if let free = callTotals[freeChargeKey] {
         return totalCharge - free
-    } else {
-        return totalCharge
-    }
+    } 
+    
+    return totalCharge
 }
 
 
