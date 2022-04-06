@@ -69,21 +69,20 @@ public func solution(_ S: inout String) -> Int {
         if let prevVal = callTotals[phoneNumber] {
             charge = prevVal + charge
         }
-        //Add to map
+        //Add to total charge for phone to map
         callTotals[phoneNumber] = charge
         
         //Now "charge" represents the total charge for the phone number if seen
         //more than once.
         //Determine which call is to be free
         //Lowest sequential phone number in case of equal charges
-        if charge >= highest {
-            if charge == highest, phoneNumber < freeChargeKey {
-                freeChargeKey = phoneNumber
-            } else {
-                highest = charge
-                freeChargeKey = phoneNumber
-            }
+        if charge == highest, phoneNumber < freeChargeKey {
+            freeChargeKey = phoneNumber
+        } else if charge > highest {
+            highest = charge
+            freeChargeKey = phoneNumber
         }
+
     }
     //Remove free call charge from total
     if let free = callTotals[freeChargeKey] {
@@ -92,7 +91,6 @@ public func solution(_ S: inout String) -> Int {
     
     return totalCharge
 }
-
 
 var test_case_number = 1
 func check(expected: Int, output: Int) {
@@ -165,3 +163,18 @@ var s6 =
 00:00:60,400-234-088
 """
 check(expected: 900 + 951 + 951 + 540, output: solution(&s6))
+
+//Correct keys for tests.
+//freeChargeKey: 400-234-090
+//✓ Test #1
+//freeChargeKey: 400-234-090
+//✓ Test #2
+//freeChargeKey: 400-234-089
+//✓ Test #3
+//freeChargeKey: 400-234-088
+//✓ Test #4
+//freeChargeKey: 400-234-088
+//✓ Test #5
+//freeChargeKey: 400-234-089
+//✓ Test #6
+
