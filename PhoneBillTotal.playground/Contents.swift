@@ -17,12 +17,6 @@ import UIKit
  *
  */
 
-var input = """
-00:00:60,400-234-087
-00:00:60,400-234-088
-00:00:60,400-234-088
-"""
-
 public func solution(_ S: inout String) -> Int {
     let log = S.split(separator: "\n")
     var callTotals = [String: Int]()
